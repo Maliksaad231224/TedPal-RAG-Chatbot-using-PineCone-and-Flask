@@ -25,4 +25,26 @@ A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDPAL technolog
 1. Clone the repository:
    ```bash
    git clone https://github.com/Maliksaad231224/TedPal-RAG-Chatbot-using-PineCone-and-Flask.git
-   cd repo
+   cd TedPal-RAG-Chatbot-using-PineCone-and-Flask
+
+2. Make the Virtual Environment
+   For Windows
+   ```bash
+   python -m venv venv
+   python venv/Scripts/activate
+   ```
+   For Linux
+   ```bash
+   python3 -m venv venv
+   python3 venv/bin/activate
+
+
+3. Run the app
+   For Windows
+   ```bash
+   python app.py
+    ```
+   For Linux
+    ```bash
+    python3 app.py
+
