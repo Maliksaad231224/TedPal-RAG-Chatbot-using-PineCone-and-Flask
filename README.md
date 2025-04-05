@@ -5,6 +5,8 @@ A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDTALKS scraped
 ![Python Version](https://img.shields.io/badge/python-3.12.3-blue.svg) [![Flask](https://img.shields.io/badge/flask-3.0.2-green.svg)](https://flask.palletsprojects.com/)
 [![LangChain](https://img.shields.io/badge/langchain-0.1.11-orange.svg)](https://python.langchain.com/)
 [![Pinecone](https://img.shields.io/badge/pinecone-3.0.1-yellow.svg)](https://www.pinecone.io/)
+[![BeautifulSoup](https://img.shields.io/badge/beautifulsoup4-4.12.3-lightgrey.svg)](https://www.crummy.com/software/BeautifulSoup/)
+
 
 
 ## Table of Contents
