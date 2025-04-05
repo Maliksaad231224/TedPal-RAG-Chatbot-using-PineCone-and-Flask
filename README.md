@@ -8,7 +8,7 @@ A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDTALKS scraped
 
 - [Features](#features)
 - [Dataset](#dataset)
-- [Dataset Description](#dataset description)
+- [Dataset Description](#dataset-description)
 - [Installation](#installation)
 - [Usage](#usage)
 
