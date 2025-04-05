@@ -1,11 +1,14 @@
 # RAG-TEDPAL-Chatbot 🤖
 
-A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDPAL technology.
+A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDTALKS scraped from Youtube.
 
 ![Python Version](https://img.shields.io/badge/python-3.12.3-blue.svg)
 
 ## Table of Contents
+
 - [Features](#features)
+- [Dataset](#dataset)
+- [Dataset Description](#dataset description)
 - [Installation](#installation)
 - [Usage](#usage)
 
@@ -14,6 +17,16 @@ A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDPAL technolog
 - TEDPAL integration for enhanced responses
 - Customizable knowledge base
 - Easy-to-use interface
+
+## Dataset Description
+The dataset contains the following information about TED Talks:
+- YouTube links to TED Talk videos
+- Text corpus/transcripts of the talks
+- Metadata about each talk (speaker, title, etc.)
+
+## Dataset for Youtube Links
+Original dataset sourced from Kaggle:  
+[TED Talks YouTube Links and Corpus for RAG](https://www.kaggle.com/datasets/awansaad6797/tedtalks-youtube-links-and-corpus-for-rag)
 
 ## Installation 💻
 
