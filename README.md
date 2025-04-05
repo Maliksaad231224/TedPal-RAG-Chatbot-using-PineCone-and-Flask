@@ -18,15 +18,16 @@ A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDTALKS scraped
 - Customizable knowledge base
 - Easy-to-use interface
 
+## Dataset
+Original dataset sourced from Kaggle:  
+[TED Talks YouTube Links and Corpus for RAG](https://www.kaggle.com/datasets/awansaad6797/tedtalks-youtube-links-and-corpus-for-rag)
+
+
 ## Dataset Description
 The dataset contains the following information about TED Talks:
 - YouTube links to TED Talk videos
 - Text corpus/transcripts of the talks
 - Metadata about each talk (speaker, title, etc.)
-
-## Dataset for Youtube Links
-Original dataset sourced from Kaggle:  
-[TED Talks YouTube Links and Corpus for RAG](https://www.kaggle.com/datasets/awansaad6797/tedtalks-youtube-links-and-corpus-for-rag)
 
 ## Installation 💻
 
