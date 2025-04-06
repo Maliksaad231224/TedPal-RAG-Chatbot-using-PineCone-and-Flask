@@ -6,12 +6,16 @@ A Retrieval-Augmented Generation (RAG) based chatbot powered by TEDTALKS scraped
 [![LangChain](https://img.shields.io/badge/langchain-0.1.11-orange.svg)](https://python.langchain.com/)
 [![Pinecone](https://img.shields.io/badge/pinecone-3.0.1-yellow.svg)](https://www.pinecone.io/)
 [![BeautifulSoup](https://img.shields.io/badge/beautifulsoup4-4.12.3-lightgrey.svg)](https://www.crummy.com/software/BeautifulSoup/)
-[![transformers](https://img.shields.io/badge/transformers-4.39.3-blue.svg)](https://huggingface.co/docs/transformers)
 [![selenium](https://img.shields.io/badge/selenium-4.19.0-green.svg)](https://www.selenium.dev/)
 [![requests](https://img.shields.io/badge/requests-2.31.0-orange.svg)](https://docs.python-requests.org/)
 [![HTML](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Transformers](https://img.shields.io/badge/transformers-4.49.0-yellow?logo=huggingface)](https://huggingface.co/transformers/)
+[![sentence-transformers](https://img.shields.io/badge/sentence--transformers-3.4.1-005571?logo=python)](https://www.sbert.net/)
+[![Hugging Face Hub](https://img.shields.io/badge/huggingface--hub-0.29.2-yellow?logo=huggingface)](https://huggingface.co/docs/huggingface_hub)
+[![Cohere](https://img.shields.io/badge/cohere-5.14.2-blueviolet?logo=cohere)](https://docs.cohere.com/)
+[![Groq](https://img.shields.io/badge/groq-0.22.0-black?logo=groq)](https://groq.com/)
 
 
 
