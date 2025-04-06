@@ -66,11 +66,15 @@ The dataset contains the following information about TED Talks:
    ```bash
    python3 -m venv venv
    python3 venv/bin/activate
+3. Installing the Libraries In the Virtual Environment
+  ```bash
+   pip install -r requirements.txt
+```
 
-
-3. Run the app
+4. Run the app
    For Windows
    ```bash
+   pip install -r requirements.txt
    python app.py
     ```
    For Linux
