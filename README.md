@@ -51,6 +51,7 @@ The dataset contains the following information about TED Talks:
 - Git
 
 ### Steps
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/Maliksaad231224/TedPal-RAG-Chatbot-using-PineCone-and-Flask.git
@@ -66,10 +67,11 @@ The dataset contains the following information about TED Talks:
    ```bash
    python3 -m venv venv
    python3 venv/bin/activate
+   
 3. Installing the Libraries In the Virtual Environment
   ```bash
    pip install -r requirements.txt
-```
+  ```
 
 4. Run the app
    For Windows
@@ -77,6 +79,7 @@ The dataset contains the following information about TED Talks:
    pip install -r requirements.txt
    python app.py
     ```
+   
    For Linux
     ```bash
     python3 app.py
