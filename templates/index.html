@@ -13,7 +13,18 @@
         <h1 class="chat-title">🤖 TedPal Chatbot</h1>
         <div class="project-info">
             <p>📚 Personal Counsellor Built Using TedTalks 📚</p>
-           
+        </div>
+
+        <!-- Model Selector - Positioned above the chat messages -->
+        <div class="model-selector-container">
+            <label for="model-selector" class="model-selector-label">Choose Model:</label>
+            <select id="model-selector" class="model-selector">
+                <option value="cohere">Cohere</option>
+                <option value="deepseek">Deepseek</option>
+                <option value="llama">LLaMA</option>
+                <option value="mistral">Mistral</option>
+                <option value="gemma2-9b-it">Gemma 2</option>
+            </select>
         </div>
 
         <div id="chatBox" class="chat-messages"></div>
