@@ -33,7 +33,17 @@ function sendMessage() {
     document.getElementById("userInput").value = "";
 }
 
-// Particles background
+// Trigger sendMessage on Enter key
 document.addEventListener("DOMContentLoaded", function () {
+    // Load particles
     particlesJS.load('particles-js', '/static/particles-config.json');
+
+    // Add Enter key support
+    const inputField = document.getElementById("userInput");
+    inputField.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Prevent newline
+            sendMessage(); // Call the same sendMessage function
+        }
+    });
 });
