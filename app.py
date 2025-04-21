@@ -13,7 +13,7 @@ from groq import Groq
 app = Flask(__name__)
 load_dotenv()
 
-# Load API keys
+
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
 COHERE_API_KEY = os.getenv('COHERE_KEY')
@@ -32,7 +32,7 @@ docsearch = PineconeVectorStore.from_existing_index(
 
 retriever = docsearch.as_retriever(search_type='similarity', search_kwargs={"k": 3})
 
-# System prompt
+
 system_prompt = (
     "You are an AI assistant that remembers past interactions with users and specializes in retrieving and summarizing TED Talks manuscripts. "
     "Use the retrieved TED Talks excerpts along with the conversation history to provide insightful and well-researched responses. "
@@ -49,8 +49,21 @@ prompt = ChatPromptTemplate.from_messages([
 
 co = cohere.Client(COHERE_API_KEY)
 
-def cohere_generate(context, question):
-    prompt_text = f"Answer the following question based on the context below: \n\nContext: {context} \n\nQuestion: {question}"
+def format_chat_history(messages):
+    return "\n".join([f"User: {msg.content}" if msg.type == "human" else f"AI: {msg.content}" for msg in messages])
+
+def cohere_generate(context, question, chat_history):
+    prompt_text = f"""Use the chat history and context below to answer the question.
+
+Chat History:
+{chat_history}
+
+Context:
+{context}
+
+Question:
+{question}
+"""
     response = co.generate(
         model='command-r-plus',
         prompt=prompt_text,
@@ -59,9 +72,19 @@ def cohere_generate(context, question):
     )
     return response.generations[0].text.strip()
 
-def deepseek_generate(context, question):
+def deepseek_generate(context, question, chat_history):
     client = Groq(api_key=GROQ_API_KEY)
-    prompt_text = f"Context:\n{context}\n\nQuestion: {question}"
+    prompt_text = f"""Use the chat history and context below to answer the question.
+
+Chat History:
+{chat_history}
+
+Context:
+{context}
+
+Question:
+{question}
+"""
 
     try:
         completion = client.chat.completions.create(
@@ -87,9 +110,19 @@ def deepseek_generate(context, question):
     except Exception as e:
         return f"Deepseek error: {str(e)}"
 
-def llama_generate(context, question):
+def llama_generate(context, question, chat_history):
     client = Groq(api_key=GROQ_API_KEY)
-    prompt_text = f"Context:\n{context}\n\nQuestion: {question}"
+    prompt_text = f"""Use the chat history and context below to answer the question.
+
+Chat History:
+{chat_history}
+
+Context:
+{context}
+
+Question:
+{question}
+"""
 
     try:
         completion = client.chat.completions.create(
@@ -115,9 +148,19 @@ def llama_generate(context, question):
     except Exception as e:
         return f"LLaMA error: {str(e)}"
 
-def mistral_generate(context, question):
+def mistral_generate(context, question, chat_history):
     client = Groq(api_key=GROQ_API_KEY)
-    prompt_text = f"Context:\n{context}\n\nQuestion: {question}"
+    prompt_text = f"""Use the chat history and context below to answer the question.
+
+Chat History:
+{chat_history}
+
+Context:
+{context}
+
+Question:
+{question}
+"""
 
     try:
         completion = client.chat.completions.create(
@@ -143,9 +186,19 @@ def mistral_generate(context, question):
     except Exception as e:
         return f"Mistral error: {str(e)}"
 
-def gemma_generate(context, question):
+def gemma_generate(context, question, chat_history):
     client = Groq(api_key=GROQ_API_KEY)
-    prompt_text = f"Context:\n{context}\n\nQuestion: {question}"
+    prompt_text = f"""Use the chat history and context below to answer the question.
+
+Chat History:
+{chat_history}
+
+Context:
+{context}
+
+Question:
+{question}
+"""
 
     try:
         completion = client.chat.completions.create(
@@ -178,19 +231,20 @@ class MultiModelQAChain:
         self.memory = memory
 
     def run(self, context, question, selected_model="cohere"):
-        chat_history = self.memory.load_memory_variables({})['chat_history']
-        self.prompt_template.format(context=context, input=question, chat_history=chat_history)
+        chat_messages = self.memory.load_memory_variables({})['chat_history']
+        formatted_chat_history = format_chat_history(chat_messages)
 
+        # Generate response
         if selected_model == "cohere":
-            answer = cohere_generate(context, question)
+            answer = cohere_generate(context, question, formatted_chat_history)
         elif selected_model == "deepseek":
-            answer = deepseek_generate(context, question)
+            answer = deepseek_generate(context, question, formatted_chat_history)
         elif selected_model == "llama":
-            answer = llama_generate(context, question)
+            answer = llama_generate(context, question, formatted_chat_history)
         elif selected_model == "mistral":
-            answer = mistral_generate(context, question)
+            answer = mistral_generate(context, question, formatted_chat_history)
         elif selected_model == "gemma2-9b-it":
-            answer = gemma_generate(context, question)
+            answer = gemma_generate(context, question, formatted_chat_history)
         else:
             answer = "Invalid model selection."
 
