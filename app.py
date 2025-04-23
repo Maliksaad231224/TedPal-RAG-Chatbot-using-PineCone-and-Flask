@@ -13,7 +13,6 @@ from groq import Groq
 app = Flask(__name__)
 load_dotenv()
 
-
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
 COHERE_API_KEY = os.getenv('COHERE_KEY')
@@ -31,7 +30,6 @@ docsearch = PineconeVectorStore.from_existing_index(
 )
 
 retriever = docsearch.as_retriever(search_type='similarity', search_kwargs={"k": 3})
-
 
 system_prompt = (
     "You are an AI assistant that remembers past interactions with users and specializes in retrieving and summarizing TED Talks manuscripts. "
@@ -85,7 +83,6 @@ Context:
 Question:
 {question}
 """
-
     try:
         completion = client.chat.completions.create(
             model="deepseek-r1-distill-qwen-32b",
@@ -99,14 +96,12 @@ Question:
             stream=False,
             response_format={"type": "json_object"}
         )
-
         message_content = completion.choices[0].message.content
         if message_content:
             parsed = json.loads(message_content)
             return parsed.get("answer", "No 'answer' key in response.")
         else:
             return "Deepseek error: Empty response."
-
     except Exception as e:
         return f"Deepseek error: {str(e)}"
 
@@ -123,7 +118,6 @@ Context:
 Question:
 {question}
 """
-
     try:
         completion = client.chat.completions.create(
             model="llama-3.1-8b-instant",
@@ -137,14 +131,12 @@ Question:
             stream=False,
             response_format={"type": "json_object"}
         )
-
         message_content = completion.choices[0].message.content
         if message_content:
             parsed = json.loads(message_content)
             return parsed.get("answer", "No 'answer' key in response.")
         else:
             return "LLaMA error: Empty response."
-
     except Exception as e:
         return f"LLaMA error: {str(e)}"
 
@@ -161,7 +153,6 @@ Context:
 Question:
 {question}
 """
-
     try:
         completion = client.chat.completions.create(
             model="mistral-saba-24b",
@@ -175,14 +166,12 @@ Question:
             stream=False,
             response_format={"type": "json_object"}
         )
-
         message_content = completion.choices[0].message.content
         if message_content:
             parsed = json.loads(message_content)
             return parsed.get("answer", "No 'answer' key in response.")
         else:
             return "Mistral error: Empty response."
-
     except Exception as e:
         return f"Mistral error: {str(e)}"
 
@@ -199,7 +188,6 @@ Context:
 Question:
 {question}
 """
-
     try:
         completion = client.chat.completions.create(
             model="gemma2-9b-it",
@@ -213,16 +201,27 @@ Question:
             stream=False,
             response_format={"type": "json_object"}
         )
-
         message_content = completion.choices[0].message.content
         if message_content:
             parsed = json.loads(message_content)
             return parsed.get("answer", "No 'answer' key in response.")
         else:
             return "Gemma error: Empty response."
-
     except Exception as e:
         return f"Gemma error: {str(e)}"
+
+def summarize_memory(chat_history):
+    prompt_text = f"""Summarize the following conversation briefly, retaining all important insights and context:
+
+{chat_history}
+"""
+    response = co.generate(
+        model="command-r-plus",
+        prompt=prompt_text,
+        max_tokens=300,
+        temperature=0.5
+    )
+    return response.generations[0].text.strip()
 
 
 class MultiModelQAChain:
@@ -234,7 +233,13 @@ class MultiModelQAChain:
         chat_messages = self.memory.load_memory_variables({})['chat_history']
         formatted_chat_history = format_chat_history(chat_messages)
 
-        # Generate response
+        # 🔄 Check if memory is too long
+        if len(chat_messages) > 20:
+            summary = summarize_memory(formatted_chat_history)
+            self.memory.clear()
+            self.memory.save_context({"input": "[SUMMARY]"}, {"output": summary})
+            formatted_chat_history = f"AI: {summary}"
+
         if selected_model == "cohere":
             answer = cohere_generate(context, question, formatted_chat_history)
         elif selected_model == "deepseek":
@@ -258,30 +263,24 @@ def create_retrieval_chain_with_rag(retriever, question_answering_chain):
         context = "\n".join([doc.page_content for doc in docs])
         answer = question_answering_chain.run(context, question, selected_model)
         return answer
-
     return chain
 
 
 question_answering_chain = MultiModelQAChain(prompt, memory)
 rag_chain = create_retrieval_chain_with_rag(retriever, question_answering_chain)
 
-
 @app.route("/")
 def index():
     return render_template('index.html')
-
 
 @app.route('/get', methods=["GET", "POST"])
 def chat():
     msg = request.form.get("msg")
     if not msg:
         return jsonify({"error": "Message is required"}), 400
-
     selected_model = request.form.get("selected_model", "cohere").lower()
     answer = rag_chain(msg, selected_model)
-
     return jsonify({"answer": answer})
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
