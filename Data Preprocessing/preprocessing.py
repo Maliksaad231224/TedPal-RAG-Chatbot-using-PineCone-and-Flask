@@ -3,7 +3,7 @@ import PyPDF2
 from fpdf import FPDF
 
 # Open and read the PDF
-pdf_file = open('data/TedTalks.pdf', 'rb')
+pdf_file = open('Data Collection/TedTalks.pdf', 'rb')
 pdf_reader = PyPDF2.PdfReader(pdf_file)
 pdf_pages = len(pdf_reader.pages)
 

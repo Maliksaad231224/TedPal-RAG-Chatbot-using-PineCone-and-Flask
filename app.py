@@ -234,7 +234,8 @@ class MultiModelQAChain:
         formatted_chat_history = format_chat_history(chat_messages)
 
         # 🔄 Check if memory is too long
-        if len(chat_messages) > 20:
+        if len(chat_messages) > 2:
+            print("⚠️ Memory is full! Summarizing and clearing chat hi")
             summary = summarize_memory(formatted_chat_history)
             self.memory.clear()
             self.memory.save_context({"input": "[SUMMARY]"}, {"output": summary})
@@ -280,7 +281,13 @@ def chat():
         return jsonify({"error": "Message is required"}), 400
     selected_model = request.form.get("selected_model", "cohere").lower()
     answer = rag_chain(msg, selected_model)
-    return jsonify({"answer": answer})
+    chat_messages = memory.load_memory_variables({})['chat_history']
+    memory_full = len(chat_messages) > 2  # Matches your 2-message threshold
+    
+    return jsonify({
+        "answer": answer,
+        "memory_full": memory_full  # New flag
+    })
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
