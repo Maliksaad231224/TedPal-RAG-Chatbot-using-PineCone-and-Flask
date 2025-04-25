@@ -228,18 +228,20 @@ class MultiModelQAChain:
     def __init__(self, prompt_template, memory):
         self.prompt_template = prompt_template
         self.memory = memory
+        self.summary = None
 
     def run(self, context, question, selected_model="cohere"):
         chat_messages = self.memory.load_memory_variables({})['chat_history']
-        formatted_chat_history = format_chat_history(chat_messages)
-
-        # 🔄 Check if memory is too long
-        if len(chat_messages) > 2:
-            print("⚠️ Memory is full! Summarizing and clearing chat hi")
+        
+        if len(chat_messages) >= 4:  
+            formatted_chat_history = format_chat_history(chat_messages)
             summary = summarize_memory(formatted_chat_history)
             self.memory.clear()
-            self.memory.save_context({"input": "[SUMMARY]"}, {"output": summary})
-            formatted_chat_history = f"AI: {summary}"
+            self.memory.save_context({"input": "[Conversation Summary]"}, {"output": summary})
+        
+            formatted_chat_history = ""
+        else:
+            formatted_chat_history = format_chat_history(chat_messages)
 
         if selected_model == "cohere":
             answer = cohere_generate(context, question, formatted_chat_history)
@@ -254,7 +256,8 @@ class MultiModelQAChain:
         else:
             answer = "Invalid model selection."
 
-        self.memory.save_context({"input": question}, {"output": answer})
+        if len(chat_messages) < 4:
+            self.memory.save_context({"input": question}, {"output": answer})
         return answer
 
 
@@ -281,12 +284,10 @@ def chat():
         return jsonify({"error": "Message is required"}), 400
     selected_model = request.form.get("selected_model", "cohere").lower()
     answer = rag_chain(msg, selected_model)
-    chat_messages = memory.load_memory_variables({})['chat_history']
-    memory_full = len(chat_messages) > 2  # Matches your 2-message threshold
+
     
     return jsonify({
-        "answer": answer,
-        "memory_full": memory_full  # New flag
+        "answer": answer
     })
 
 if __name__ == '__main__':
