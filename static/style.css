@@ -5,18 +5,63 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Poppins', sans-serif;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle, #140020, #000000);
-    position: relative;
+    background: linear-gradient(to right top, #121416, #212123, #302e31, #413b3e, #514a4a);
     overflow: hidden;
-}
-
+    position: relative;
+  }
+  
+  /* Smoke effects using body's pseudo-elements */
+  body::before,
+  body::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: transparent;
+    animation: drift 8s infinite ease-in-out;
+    pointer-events: none; /* Allows clicks to pass through */
+  }
+  
+  /* First smoke circle */
+  body::before {
+    width: 120px;
+    height: 120px;
+    top: 30%;
+    left: 20%;
+    box-shadow: 
+      0 0 5px 2px rgba(65, 65, 65, 0.7),
+      0 0 10px 5px rgba(92, 92, 92, 0.5),
+      0 0 15px 8px rgba(121, 121, 121, 0.3);
+  }
+  
+  /* Second smoke circle */
+  body::after {
+    width: 80px;
+    height: 80px;
+    top: 50%;
+    left: 70%;
+    box-shadow: 
+      0 0 4px 2px rgba(65, 65, 65, 0.6),
+      0 0 8px 4px rgba(92, 92, 92, 0.4),
+      0 0 12px 6px rgba(121, 121, 121, 0.2);
+    animation-delay: -2s;
+  }
+  
+  @keyframes drift {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translate(10px, -10px) scale(1.1);
+      opacity: 0.6;
+    }
+  }
 /* Moving Particles */
 #particles-js {
     position: absolute;
@@ -31,8 +76,8 @@ body {
 .chat-container {
     width: 60vw;
     height: 85vh;
-    border-radius: 20px;
-    background: rgba(20, 20, 20, 0.8);
+    border-radius: 30px;
+    background: linear-gradient(to right, #514e4e, #3e3c3c, #2b2a2b, #1a1a1b, #050505);
     backdrop-filter: blur(15px);
     display: flex;
     flex-direction: column;
@@ -40,23 +85,16 @@ body {
     padding: 20px;
     position: relative;
     z-index: 1;
-    border: 2px solid #ff0080;
-    box-shadow: 0px 0px 15px #ff0080;
-    animation: neonGlow 2s infinite alternate;
-}
-
-/* Neon Glow Animation */
-@keyframes neonGlow {
-    0% { box-shadow: 0px 0px 15px #ff0080; }
-    50% { box-shadow: 0px 0px 25px #00ffff; }
-    100% { box-shadow: 0px 0px 15px #ff0080; }
+    border: 1.2PX SOLID whitesmoke;
+  
+   
 }
 
 /* Chat Title */
 .chat-title {
     font-size: 2rem;
-    font-weight: 700;
-    color: #ffcc00;
+    font-weight: 200;
+    color: whitesmoke;
     text-align: center;
     margin-bottom: 10px;
 }
@@ -97,16 +135,17 @@ body {
 
 /* Bot Reply - Left side */
 .bot-message {
-    background: rgba(255, 0, 255, 0.2);
-    color: #5397BD;
+    background:  linear-gradient(to right, #2c2727, #2f2a2a, #312e2e, #343131, #373535);
+    color: white;
     align-self: flex-start;
     border-bottom-left-radius: 0;
 }
 
 /* User Message - Right side */
 .user-message {
-    background: rgba(0, 255, 255, 0.2);
-    color: #00ffff;
+    background:  #d300f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
     align-self: flex-end;
     border-bottom-right-radius: 0;
 }
@@ -120,7 +159,7 @@ body {
     width: 0;
     height: 0;
     border: 10px solid transparent;
-    border-right-color: rgba(255, 0, 255, 0.2);
+    border-right-color:linear-gradient(to right, #2c2727, #2f2a2a, #312e2e, #343131, #373535);
     border-left: 0;
     margin-left: -10px;
 }
@@ -133,7 +172,7 @@ body {
     width: 0;
     height: 0;
     border: 10px solid transparent;
-    border-left-color: rgba(0, 255, 255, 0.2);
+    border-left-color:  #d300f9;
     border-right: 0;
     margin-right: -10px;
 }
@@ -146,7 +185,7 @@ body {
     background: rgba(0, 0, 0, 0.8);
     border-radius: 25px;
     padding: 10px;
-    box-shadow: 0px 0px 8px rgba(255, 94, 0, 0.7);
+    box-shadow: 0px 0px 8px whitesmoke;
     margin-top: auto;
 }
 
@@ -164,7 +203,7 @@ body {
 
 /* Send Button */
 .input-container button {
-    background: #ff0080;
+    background: whitesmoke;
     border: none;
     padding: 12px;
     border-radius: 50%;
@@ -173,7 +212,7 @@ body {
 }
 
 .input-container button:hover {
-    background: #00ffff;
+    background: #8f9b9b;
     transform: scale(1.1);
 }
 
@@ -190,13 +229,14 @@ body {
 .model-selector-container {
     text-align: center;
     margin-bottom: 15px;
+    color:#1a1a1b;
 }
 
 /* Model Selector Label */
 .model-selector-label {
     margin-right: 10px;
     font-weight: 600;
-    color: #ffcc00;
+    color: whitesmoke;
 }
 
 /* Model Selector Dropdown */
@@ -204,9 +244,9 @@ body {
     padding: 8px 12px;
     font-size: 1rem;
     border-radius: 5px;
-    border: 1px solid #ff0080;
-    background: rgba(0, 0, 0, 0.6);
-    color: #ffcc00;
+    border: 1px solid white;
+    background: rgba(63, 58, 58, 0.6);
+    color: white;
     outline: none;
     cursor: pointer;
 }

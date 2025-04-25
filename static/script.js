@@ -6,7 +6,7 @@ function sendMessage() {
 
     let userMessage = document.createElement("p");
     userMessage.className = "user-message";
-    userMessage.textContent = "🧑‍💻 " + userInput;
+    userMessage.textContent =  userInput;
     chatBox.appendChild(userMessage);
 
     // Send request to backend
@@ -19,7 +19,7 @@ function sendMessage() {
     .then(data => {
         let botMessage = document.createElement("p");
         botMessage.className = "bot-message";
-        botMessage.textContent = "🤖 " + data.answer;
+        botMessage.textContent = data.answer;
         chatBox.appendChild(botMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
     })
