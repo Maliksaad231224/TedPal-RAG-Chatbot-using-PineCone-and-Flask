@@ -7,24 +7,27 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  
+    <div class="floating-model-selector">
+      
+        <select class="model-dropdown">
+            <option value="" disabled selected hidden>Choose LLM</option>
+          <option value="cohere">Cohere</option>
+          <option value="deepseek">Deepseek</option>
+          <option value="llama">LLaMA</option>
+          <option value="mistral">Mistral</option>
+          <option value="gemma2-9b-it">Gemma 2</option>
+        </select>
+      </div>  
     <div id="particles-js"></div>
+    <div class="app-logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" >
+    </div>
 
     <div class="chat-container">
-        <h1 class="chat-title">Chat</h1>
+        <h1 class="chat-title"> Ted X Chat</h1>
    
 
-        <!-- Model Selector - Positioned above the chat messages -->
-        <div class="model-selector-container">
-            <label for="model-selector" class="model-selector-label">Choose Model:</label>
-            <select id="model-selector" class="model-selector">
-                <option value="cohere">Cohere</option>
-                <option value="deepseek">Deepseek</option>
-                <option value="llama">LLaMA</option>
-                <option value="mistral">Mistral</option>
-                <option value="gemma2-9b-it">Gemma 2</option>
-            </select>
-        </div>
+   
 
         <div id="chatBox" class="chat-messages"></div>
 

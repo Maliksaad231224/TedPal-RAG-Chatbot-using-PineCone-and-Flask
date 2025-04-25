@@ -11,7 +11,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to right top, #121416, #212123, #302e31, #413b3e, #514a4a);
+    background: #f2f2f2;
     overflow: hidden;
     position: relative;
   }
@@ -72,12 +72,40 @@ body {
     z-index: 0;
 }
 
-/* Chat Container */
+/* Compact Logo Styles */
+.app-logo {
+    position: fixed; /* Changed from absolute to fixed for consistent positioning */
+    top: 15px;
+    left: 15px;
+    z-index: 1001; /* Higher than model selector */
+    transition: all 0.3s ease;
+  }
+  
+  .app-logo img {
+    width: 50px; /* Reduced size */
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    transition: all 0.3s ease;
+  }
+  
+  /* Hover effect */
+  .app-logo:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Active/pressed effect */
+  .app-logo:active img {
+    transform: scale(0.98);
+  }
 .chat-container {
     width: 60vw;
     height: 85vh;
-    border-radius: 30px;
-    background: linear-gradient(to right, #514e4e, #3e3c3c, #2b2a2b, #1a1a1b, #050505);
+    border-radius: 40px;
+    background: #ffffff;
     backdrop-filter: blur(15px);
     display: flex;
     flex-direction: column;
@@ -85,19 +113,23 @@ body {
     padding: 20px;
     position: relative;
     z-index: 1;
-    border: 1.2PX SOLID whitesmoke;
+    border: 1.0PX SOLID black;
   
    
 }
 
 /* Chat Title */
 .chat-title {
-    font-size: 2rem;
-    font-weight: 200;
-    color: whitesmoke;
-    text-align: center;
-    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.5rem); /* Responsive font size */
+    font-weight: 600; /* Slightly bolder for better visibility */
+    color: #222; /* Softer black for better contrast */
+    text-align: left;
+    margin-bottom: 1rem; /* Use relative units for better scalability */
+    line-height: 1.2; /* Improves readability */
+    letter-spacing: 0.5px; /* Slightly improves legibility */
 }
+
 
 .status {
     color: lime;
@@ -135,17 +167,20 @@ body {
 
 /* Bot Reply - Left side */
 .bot-message {
-    background:  linear-gradient(to right, #2c2727, #2f2a2a, #312e2e, #343131, #373535);
-    color: white;
+  
+    background: #5DA85DBD;
+    background: linear-gradient(225deg, #5DA85DBD, #C2D6C2BD);;;
+    
+    color: black;
     align-self: flex-start;
     border-bottom-left-radius: 0;
 }
 
 /* User Message - Right side */
 .user-message {
-    background:  #d300f9;
+    background:   #f2f2f2;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
+    color: black;
     align-self: flex-end;
     border-bottom-right-radius: 0;
 }
@@ -182,10 +217,10 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.8);
+    background: #f2f2f2;
     border-radius: 25px;
     padding: 10px;
-    box-shadow: 0px 0px 8px whitesmoke;
+    box-shadow: 0px 0px 8px black;
     margin-top: auto;
 }
 
@@ -195,7 +230,7 @@ body {
     padding: 12px;
     border: none;
     background: transparent;
-    color: white;
+    color: black;
     font-size: 1rem;
     outline: none;
     caret-color: #ff5e00;
@@ -203,7 +238,7 @@ body {
 
 /* Send Button */
 .input-container button {
-    background: whitesmoke;
+    background: black;
     border: none;
     padding: 12px;
     border-radius: 50%;
@@ -224,29 +259,55 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     padding-bottom: 5px;
 }
-
-/* Model Selector Container */
-.model-selector-container {
-    text-align: center;
-    margin-bottom: 15px;
-    color:#1a1a1b;
-}
-
-/* Model Selector Label */
-.model-selector-label {
-    margin-right: 10px;
-    font-weight: 600;
-    color: whitesmoke;
-}
-
-/* Model Selector Dropdown */
-.model-selector {
-    padding: 8px 12px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid white;
-    background: rgba(63, 58, 58, 0.6);
+/* Floating Model Selector Styles */
+.floating-model-selector {
+    position: fixed;
+    left: 20px;
+    top: 70%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0, 0.9);
+    border-radius: 20px; /* Increased border radius */
+  padding: 16px; /* More padding */
+  width: 220px; /* Increased width */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    border: 6px solid rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+  
+  .selector-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 500;
     color: white;
-    outline: none;
+  }
+  
+  .ai-icon {
+    width: 20px;
+    height: 20px;
+    color: #646cff;
+  }
+  
+  .model-dropdown {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: rgb(83, 75, 75);
+    color: white;
+    font-size: 14px;
     cursor: pointer;
-}
+    appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+  }
+  
+  .model-dropdown:focus {
+    outline: none;
+    border-color: #646cff;
+    box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+  }

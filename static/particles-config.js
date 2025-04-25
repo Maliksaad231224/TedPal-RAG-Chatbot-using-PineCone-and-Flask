@@ -1,9 +1,9 @@
 particlesJS("particles-js", {
     particles: {
-        number: { value: 60, density: { enable: true, value_area: 800 } },
+        number: { value: 120, density: { enable: true, value_area: 900 } },
         color: { value: ["#ff0080", "#00ffff", "#ffcc00"] },
         shape: { type: "circle" },
-        opacity: { value: 0.7, random: true },
+        opacity: { value: 0.2, random: true },
         size: { value: 8, random: true },
         move: { enable: true, speed: 3, direction: "none", random: false }
     },
