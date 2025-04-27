@@ -13,11 +13,12 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <!-- <img src="{{ url_for('static', filename='logo.png') }}" alt="TedX Logo"> -->
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TedX Logo">
+                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="TedX Logo">
                 <h2>TedX<span>Pal</span></h2>
             </div>
-            
+            <button class="theme-toggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
             <div class="model-selector">
                 <div class="selector-label">
                     <i class="fas fa-robot"></i>
@@ -26,7 +27,7 @@
                 <select class="model-dropdown" id="model-dropdown">
                     <option value="" disabled selected hidden>Choose LLM</option>
                     <option value="cohere">Cohere</option>
-                    <option value="deepseek">Deepseek</option>
+                    <option value="deepseek">Gwen</option>
                     <option value="mistral">Mistral</option>
                     <option value="llama">LLaMA</option>
                    
@@ -63,14 +64,12 @@
         <!-- Main Chat Area -->
         <main class="main-content">
             <header class="chat-header">
-                <div class="mobile-menu-toggle">
+                <button class="theme-toggle" title="Toggle Theme">
                     <i class="fas fa-bars"></i>
-                </div>
+                </button>
                 <h1 class="chat-title">TedX Chat</h1>
                 <div class="header-actions">
-                    <button class="theme-toggle" title="Toggle Theme">
-                        <i class="fas fa-moon"></i>
-                    </button>
+                   
                     <button class="expand-btn" title="Expand View">
                         <i class="fas fa-expand"></i>
                     </button>

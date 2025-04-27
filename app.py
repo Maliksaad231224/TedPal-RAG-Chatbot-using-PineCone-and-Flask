@@ -85,7 +85,7 @@ Question:
 """
     try:
         completion = client.chat.completions.create(
-            model="deepseek-r1-distill-qwen-32b",
+            model="qwen-qwq-32b",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. Return your response as a JSON object with an 'answer' key. Do not add any extra formatting or markdown."},
                 {"role": "user", "content": prompt_text}

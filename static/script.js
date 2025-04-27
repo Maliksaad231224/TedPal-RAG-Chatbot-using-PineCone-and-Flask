@@ -67,3 +67,45 @@ examplePrompts.forEach((prompt) => {
     inputField.value = prompt.textContent;
   });
 });
+
+// Theme Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Check for saved theme preference or use system preference
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Set initial theme
+  if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+      document.body.classList.add('dark-mode');
+      updateThemeIcon('dark');
+  } else {
+      updateThemeIcon('light');
+  }
+
+  // Theme toggle button functionality
+  const themeToggle = document.querySelector('.theme-toggle');
+  themeToggle.addEventListener('click', toggleTheme);
+});
+
+function toggleTheme() {
+  const body = document.body;
+  body.classList.toggle('dark-mode');
+  
+  // Save preference to localStorage
+  const isDark = body.classList.contains('dark-mode');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  
+  // Update icon
+  updateThemeIcon(isDark ? 'dark' : 'light');
+}
+
+function updateThemeIcon(theme) {
+  const themeIcon = document.querySelector('.theme-toggle i');
+  if (theme === 'dark') {
+      themeIcon.classList.remove('fa-moon');
+      themeIcon.classList.add('fa-sun');
+  } else {
+      themeIcon.classList.remove('fa-sun');
+      themeIcon.classList.add('fa-moon');
+  }
+}
