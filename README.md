@@ -72,7 +72,11 @@ The dataset contains the following information about TED Talks:
   ```bash
    pip install -r requirements.txt
   ```
-
+  In case of conflicting dependencies, you can try
+  ```bash
+   pip install sentence-transformers==2.2.2 langchain flask pypdf python-dotenv pinecone[grpc] langchain-pinecone langchain_community langchain_openai langchain_experimental
+   ```
+  
 4. Run the app
    For Windows
    ```bash
