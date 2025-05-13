@@ -35,6 +35,8 @@ system_prompt = (
     "You are an AI assistant that remembers past interactions with users and specializes in retrieving and summarizing TED Talks manuscripts. "
     "Use the retrieved TED Talks excerpts along with the conversation history to provide insightful and well-researched responses. "
     "Keep the conversation as detailed as possible. "
+    "Reformat the following chatbot response to be compassionate, structured, and easy to read with numbered advice and bold headings:"
+
     "If the user asks for more information, generate responses based on additional TED Talk excerpts. "
     "If you don’t know the answer, say that you don’t know. Keep responses concise.\n\n"
     "Chat History:\n{chat_history}\n\nContext:\n{context}\n\n"
@@ -65,10 +67,12 @@ Question:
     response = co.generate(
         model='command-r-plus',
         prompt=prompt_text,
-        max_tokens=600,
-        temperature=0.7
+        max_tokens=1024,
+        temperature=0.6
     )
     return response.generations[0].text.strip()
+
+import json
 
 def deepseek_generate(context, question, chat_history):
     client = Groq(api_key=GROQ_API_KEY)
@@ -87,7 +91,16 @@ Question:
         completion = client.chat.completions.create(
             model="qwen-qwq-32b",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. Return your response as a JSON object with an 'answer' key. Do not add any extra formatting or markdown."},
+                {
+                    "role": "system",
+                    "content": (
+                        "You are an AI assistant that remembers past interactions with users and specializes "
+                        "in retrieving and summarizing TED Talks manuscripts. Use the retrieved TED Talks excerpts "
+                        "along with the conversation history to provide insightful and well-researched responses. "
+                        "Reformat the following chatbot response to be compassionate, structured, and easy to read "
+                        "with numbered advice and bold headings. Return your response as a JSON object with an 'answer' key."
+                    )
+                },
                 {"role": "user", "content": prompt_text}
             ],
             temperature=0.6,
@@ -96,14 +109,22 @@ Question:
             stream=False,
             response_format={"type": "json_object"}
         )
+
         message_content = completion.choices[0].message.content
+
         if message_content:
-            parsed = json.loads(message_content)
-            return parsed.get("answer", "No 'answer' key in response.")
+            try:
+                # Safe parsing
+                parsed = json.loads(message_content)
+                return parsed.get("answer", "No 'answer' key in response.")
+            except json.JSONDecodeError as je:
+                return f"JSON decoding failed: {je}\nRaw output:\n{message_content}"
         else:
             return "Deepseek error: Empty response."
+
     except Exception as e:
         return f"Deepseek error: {str(e)}"
+
 
 def llama_generate(context, question, chat_history):
     client = Groq(api_key=GROQ_API_KEY)
@@ -122,7 +143,7 @@ Question:
         completion = client.chat.completions.create(
             model="llama-3.1-8b-instant",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. Return your response as a JSON object with an 'answer' key. Do not add any extra formatting or markdown."},
+                {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. You are an AI assistant that remembers past interactions with users and specializes in retrieving and summarizing TED Talks manuscripts. Use the retrieved TED Talks excerpts along with the conversation history to provide insightful and well-researched responses. Keep the conversation as detailed as possible. Reformat the following chatbot response to be compassionate, structured, and easy to read with numbered advice and bold headings: If the user asks for more information, generate responses based on additional TED Talk excerpts. If you don’t know the answer, say that you don’t know. Keep responses concise. Return your response as a JSON object with an 'answer' key. "},
                 {"role": "user", "content": prompt_text}
             ],
             temperature=0.6,
@@ -157,7 +178,7 @@ Question:
         completion = client.chat.completions.create(
             model="mistral-saba-24b",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. Return your response as a JSON object with an 'answer' key. Do not add any extra formatting or markdown."},
+                {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. You are an AI assistant that remembers past interactions with users and specializes in retrieving and summarizing TED Talks manuscripts. Use the retrieved TED Talks excerpts along with the conversation history to provide insightful and well-researched responses. Keep the conversation as detailed as possible. Reformat the following chatbot response to be compassionate, structured, and easy to read with numbered advice and bold headings: If the user asks for more information, generate responses based on additional TED Talk excerpts. If you don’t know the answer, say that you don’t know. Keep responses concise. Return your response as a JSON object with an 'answer' key."},
                 {"role": "user", "content": prompt_text}
             ],
             temperature=0.6,
@@ -192,7 +213,7 @@ Question:
         completion = client.chat.completions.create(
             model="gemma2-9b-it",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers questions based on TED Talks content. Return your response as a JSON object with an 'answer' key. Do not add any extra formatting or markdown."},
+                {"role": "system", "content":  "You are a helpful assistant that answers questions based on TED Talks content. You are an AI assistant that remembers past interactions with users and specializes in retrieving and summarizing TED Talks manuscripts. Use the retrieved TED Talks excerpts along with the conversation history to provide insightful and well-researched responses. Keep the conversation as detailed as possible. Reformat the following chatbot response to be compassionate, structured, and easy to read with numbered advice and bold headings: If the user asks for more information, generate responses based on additional TED Talk excerpts. If you don’t know the answer, say that you don’t know. Keep responses concise. Return your response as a JSON object with an 'answer' key."},
                 {"role": "user", "content": prompt_text}
             ],
             temperature=0.6,
@@ -233,7 +254,7 @@ class MultiModelQAChain:
     def run(self, context, question, selected_model="cohere"):
         chat_messages = self.memory.load_memory_variables({})['chat_history']
         
-        if len(chat_messages) >= 4:  
+        if len(chat_messages) >= 20:  
             formatted_chat_history = format_chat_history(chat_messages)
             summary = summarize_memory(formatted_chat_history)
             self.memory.clear()

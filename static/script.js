@@ -26,7 +26,7 @@ function sendMessage() {
     .then(data => {
       let botMessage = document.createElement("p");
       botMessage.className = "bot-message";
-      botMessage.textContent = data.answer;
+      botMessage.innerHTML = marked.parse(data.answer);
       chatBox.appendChild(botMessage);
       chatBox.scrollTop = chatBox.scrollHeight;
     })
