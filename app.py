@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from src.helper import downlaod
+from src.helper import download
 from langchain.memory import ConversationBufferMemory
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.prompts import ChatPromptTemplate
@@ -21,7 +21,10 @@ GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 os.environ['PINECONE_API_KEY'] = PINECONE_API_KEY
 
-embeddings = downlaod()
+from langchain.embeddings import HuggingFaceEmbeddings
+
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
 
 docsearch = PineconeVectorStore.from_existing_index(

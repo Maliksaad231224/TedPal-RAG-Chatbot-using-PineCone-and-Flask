@@ -20,8 +20,5 @@ RUN pip install --upgrade pip && \
 # Copy application code
 COPY . .
 
-# Download model during build
-RUN python -c "from src.helper import downlaod; downlaod()"
-
 EXPOSE 8080
 CMD ["python", "app.py"]

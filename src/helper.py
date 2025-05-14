@@ -15,17 +15,13 @@ def text_split(extracted_Data):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=900, chunk_overlap=20)
     text_chunk = text_splitter.split_documents(extracted_Data)
     return text_chunk
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
-def downlaod():
-    # Set cache location (matches Docker environment variable)
-    os.environ['TRANSFORMERS_CACHE'] = os.getenv('TRANSFORMERS_CACHE', '/app/models')
-    
-    model_name = "sentence-transformers/all-mpnet-base-v2"
-    model_kwargs = {'device': 'cpu'}
-    encode_kwargs = {'normalize_embeddings': False}
-    
-    return HuggingFaceEmbeddings(
-        model_name=model_name,
-        model_kwargs=model_kwargs,
-        encode_kwargs=encode_kwargs
+def download():
+    api_token = os.getenv('HUGGING_FACE_API_TOKEN')
+    model_name = "sentence-transformers/all-MiniLM-L6-v2"
+    return HuggingFaceEndpointEmbeddings(
+        model=model_name,
+        huggingfacehub_api_token=api_token
     )
